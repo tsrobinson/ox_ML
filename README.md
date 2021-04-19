@@ -1,4 +1,4 @@
-# Machine Learning Course
+# Machine Learning
 
 ## Oxford Spring School in Advanced Research Methods 2021
 
