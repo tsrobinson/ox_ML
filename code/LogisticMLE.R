@@ -4,13 +4,15 @@
 ##                                Machine Learning                            ##
 ##                                    Day 1/5                                 ##
 ##                                                                            ##
-##                      Coding a logistic regression estimator                ##
+##                    Constructing a logistic regression estimator            ##
 ##                                                                            ##
 ################################################################################
-set.seed(89)
+
 #### 1. Define data and a prediction function ####
 
 # Generate some random covariates
+set.seed(89)
+
 X_data <- data.frame(X0 = 1, # Include a constant to model the intercept
                      X1 = runif(100,-5,5),
                      X2 = runif(100,-2,2))
@@ -18,7 +20,7 @@ X_data <- data.frame(X0 = 1, # Include a constant to model the intercept
 # Calculate Y based on known functional form (incl. random error term)
 Y <- 1/(1+exp(-(3 + X_data$X1 - 2*X_data$X2 + rnorm(100,0,0.05))))
 
-# Function 
+# Custom function to get logistic yhat predictions
 predict <- function(row, coefficients) {
   pred_terms <- row*coefficients
   yhat <- sum(pred_terms)
@@ -48,7 +50,7 @@ train <- function(X,y,l_rate, reps) {
   # Instantiate model with basic guess of 0 for all coefs
   coefs <- rep(0, ncol(X))
   
-  for (epoch in 1:reps) {
+  for (rep in 1:reps) {
     
     total_error <- 0
     
@@ -67,7 +69,7 @@ train <- function(X,y,l_rate, reps) {
     
     MSE <- total_error/nrow(X)
     
-    message(paste0("Iteration ",epoch,"/",reps," -- MSE = ",MSE))
+    message(paste0("Iteration ",rep,"/",reps," -- MSE = ",MSE))
     
   }
   
@@ -78,4 +80,7 @@ train <- function(X,y,l_rate, reps) {
 
 coefs_logit <- train(X = X_data, y = Y, l_rate = 0.3, reps = 1000)
 
-## Extensions -- random coefficient values; stopping rule
+## Extensions to consider
+
+# * Initialise random coefficient values
+# * Implement a stopping rule
