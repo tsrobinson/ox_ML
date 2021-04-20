@@ -80,7 +80,7 @@ lasso_selector <- function(LHS, RHS, folds) {
   cv_lambda <- cv.glmnet(x = RHS, y = LHS, alpha = 1, nfolds = folds)$lambda.min
   
   # Estimate final model
-  lasso <- glmnet(x=RHS_matrix,y=LHS, lambda = cv_lambda)
+  lasso <- glmnet(x=RHS, y=LHS, alpha=1, lambda = cv_lambda)
   
   # Find non-zero coefficients
   coef_index <- which(coef(lasso) != 0) - 1 
@@ -110,7 +110,7 @@ ds_matrix <- as.data.frame(cbind(Protest=Y,
                                  remit_dict=DV,
                                  RHS_matrix[,selected_columns]))
 
-ds_model <- glm("Y~.", data = ds_matrix)
+ds_model <- glm("Protest~.", data = ds_matrix)
 
 naive_model <- glm(paste0(c("Protest ~ remit*dict",
                             controls,
@@ -118,7 +118,7 @@ naive_model <- glm(paste0(c("Protest ~ remit*dict",
                           collapse = " + "),
                    data = emw)
 
-fmod_model <- glm("Y~.", 
+fmod_model <- glm("Protest~.", 
                   data = as.data.frame(cbind(Protest=Y,
                                              remit=D,
                                              remit_dict=DV,
