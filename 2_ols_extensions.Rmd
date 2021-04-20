@@ -125,7 +125,7 @@ In other words, in terms of estimating the parameters $\beta$, you won't find a 
 
 OLS is fantastic for inference:
 
-* Typically concerned with $\bm{\hat{\beta}}$ 
+* Typically concerned with generating unbiased estimate $\bm{\hat{\beta}}$ 
 * On average, we know that our estimator is going to yield the true parameter values
 
 ## Bias
@@ -615,13 +615,13 @@ Naive suggestion:
 What's wrong with this model?
 
 * We assume that the interactive effect $\beta_3$ is constant across covariates
-* This introduces bias into the model if $vX$ is related either to $\bm{dv}$ or $\bm{y}$
+* This introduces bias into the model if $\bm{vX}$ is related either to $\bm{dv}$ or $\bm{y}$
 
 ## Prediction and inference problem
 
 Therefore the researcher faces a prediction problem *and* an inference problem:
 
-* **Inference problem**: How do we control for potential bias between $\bm{X,v,d}$, and $\bm{y}$ of $\bm{\beta}^\mathcal{P}$
+* **Inference problem**: How do we control for potential bias introduced between $\bm{X,v,d}$, and $\bm{y}$?
 
 
 * **Prediction problem**: Which interactions within $\bm{vX}$ are most likely to confound the results?
