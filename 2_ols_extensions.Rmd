@@ -418,7 +418,7 @@ We can reduce the complexity of the regression model by setting some parameters 
 
 * Aim to reduce the variance error by more than the increase in bias error
 
-In the linear framework, we need some way to penalize non-zero coefficeints
+In the linear framework, we need some way to penalize non-zero coefficients
 
 ## Least absolute shrinkage and selection operator (LASSO)
 
