@@ -25,10 +25,10 @@ library(dplyr)
 #### 0. Clean the raw data ####
 #
 # library(tidyverse)
+# library(haven)
 #
 # # !!! NB: This file is 800MB
 # cces <- read_dta("https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/ZSBZ7K/H5IDTA")
-# cces <- read_dta("../../Downloads/cces18_common_vv.dta")
 # 
 # cces_format <- cces %>%
 #   select(inputstate, birthyr, gender, sexuality, trans, educ, votereg, race, employ,
@@ -100,7 +100,7 @@ prop.table(table(Y_val))
 
 ## Train
 rf_model <- randomForest(votetrump ~ ., data = X_train, 
-                         mtry =2, ntree = 500,
+                         mtry = 2, ntree = 500,
                          importance = TRUE)
 
 ## Inspect the mechanics of the model
