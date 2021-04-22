@@ -22,7 +22,7 @@ Yesterday's session, we covered non-parametric ML methods using trees
 
 * The estimator does not require the model form to be pre-specified
 
-* Complex relationships can be captured via a conjunctions of splits
+* Complex relationships can be captured via a conjunction of splits
 
 * Two different "forest" methods can improve on the performance of CART
 
@@ -37,12 +37,12 @@ Explore an even more flexible form of ML:
 
 Remainder of the session:
 
-1. Perceptrons
+1. Simple neural networks
 2. Deep learning
 3. Different types of neural network
 4. Example application in social science
 
-# Perceptrons
+# Neural network terminology
 
 ## Basic terminology
 
@@ -56,7 +56,7 @@ Remainder of the session:
 
 **Bias**
 
-* A scalar value *added* within the node
+* A scalar value *added* to the input vector
 
 **Node**
 
@@ -97,7 +97,32 @@ $\phi$ may simply be the **identity function**:
 
 * $\phi(\bm{x}) = \frac{e^{\bm{x}} - e^{-\bm{x}}}{e^{\bm{x}} + e^{-\bm{x}}}$
 
-These functions are particularly useful because they have known derivatives -- which we'll return to later!
+These functions (and others) are particularly useful because they have known derivatives -- which we'll return to later!
+
+## Gaining a prediction from our simple model
+
+\begin{columns}
+\begin{column}{0.4\textwidth}
+\includegraphics[width = \textwidth]{images/sn_perceptron.png}
+\end{column}
+\begin{column}{0.48\textwidth}
+Suppose:
+\begin{itemize}
+\item $\phi$ is the ReLU function
+\item $\bm{w} = \bm{2}, b = 1$
+\end{itemize}
+\end{column}
+\end{columns}
+
+And we observe the following input vector $\bm{x}$:
+$$
+\begin{bmatrix}
+5 \\
+1 \\
+-1 
+\end{bmatrix}  
+$$
+What is $\hat{\bm{y}}$?
 
 ## Multiple inputs
 
@@ -115,7 +140,7 @@ $$
 
 ## Initialisation
 
-Like BART (and unlike CART/RF) prior to training we build the model prior to training it
+Like BART (and unlike CART/RF) prior to training we build the model network
 
 For a single-node perceptron model with $k$ inputs, that means instantiating the weights and biases
 
@@ -141,7 +166,7 @@ Depending on the type of prediction problem, we want to use a different function
 
 **Continuous $\bm{y}$**
 
-* $\phi$ will be ReLU 
+* $\phi$ will be linear or ReLU 
 * Minimise the mean squared error
 * I.e. $\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y_i})^2$
 
