@@ -234,7 +234,7 @@ where:
 * $\sigma$ is an activation function
 
 This model can be generalized to an arbitrary number of hidden layers $H$:
-\begin{align*}
+\begin{align*}@
 \mathbf{y} = \Phi ( \mathbf{W}^{(H)}[...[\sigma ( \mathbf{W}^{(2)}  [\sigma (\mathbf{W}^{(1)} \mathbf{x} + \mathbf{b}^{(1)})] + \mathbf{b}^{(2)})]...] + \mathbf{b}^{(H)}),
 \end{align*}
 where $\mathbf{x}$ is a vector of inputs and $\Phi$ is a final-layer activation function.
@@ -461,7 +461,7 @@ One solution is to use multiple imputation (MI) to ``complete'' the datasets:
 Once we have $M$ completed datasets, we:
 
 * Estimate $M$ separate regression models
-* Combine the coefficients using Rubin's [@rubin1987] combination rules:
+* Combine the coefficients using Rubin's (1987) combination rules:
 
 $$\hat{\beta} = \frac{1}{M} \left( \sum_{i=1}^M\hat{\beta}_{i} \right)$$
 
@@ -592,5 +592,6 @@ One particularly exciting avenue for neural net. applications is in "creative" t
 And there are applied subjects of interest too:
 
 * How does the rise of neural networks affect political behavior?
-* E.g. does ad targeting work? [@harukawa2021]
+    * E.g. Does political ad targeting work? 
+    * See here: https://muhark.github.io/static/docs/harukawa-2021-microtargeting.pdf
 
