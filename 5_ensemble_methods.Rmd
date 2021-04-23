@@ -68,7 +68,7 @@ We can think about two levels of optimisation:
     * Solved algorithmically and via tools like cross-validation
   
 * $\operatorname*{arg\,min}_{g} |f(\bm{X}) - \hat{g}_{\lambda,\theta}(\bm{X})|$
-    * Impossible to solve in most cases
+    * Need to estimate all $g \in \mathcal{G}$, and perform tuning within each $g$
 
 ## Generic meta-prediction problem
 
@@ -86,14 +86,14 @@ How can we optimise our choice of "learner" in order to best approximate the tru
 
 ## Combining models
 
-Choosing a *single* best model may still be suboptimal:
+Choosing a *single* best model may be suboptimal when:
 
-* Different estimating strategies may be better at modeling different parts of the outcome
+* Different estimating strategies better estimate different parts of the outcome
 
 The alternative is to combine models:
 
 * We can average models together
-* We can adapt models iteratively
+* We can adapt models sequentially
 * We can "weight" and sum models
 
 *Do any of these sound familiar?*
@@ -266,18 +266,18 @@ Boosting operates on the principle of training models sequentially
 
 Under adaptive boosting, the ensemble model is a weighted sum of "weak learners"
 $$
-S_L(\bm{X}) = \sum_{l=1}^{L}c_l \times w_l(\bm{X}),
+S_L(\bm{X}) = \sum_{l=1}^{L}c_l \times w_l(\bm{X}^{(l)}),
 $$
 where:
 
 * $L$ indexes a series of weak learners
 * $c_l$ is a coefficient corresponding to the $l$th weak learner $w_l$
 
-To optimise $\bm{c}$ and $\bm{w}$, we add the models sequentially to $S_L$
+To optimise $\bm{c}$ and $\bm{w} = \{w_1,\cdots,w_L\}$, we add the models sequentially to $S_L$, *reweighting* the data after each model
 
 The optimisation function at each iteration is defined as:
 $$
-\operatorname*{arg\,min}_{c_l,w_l} \sum_{i=1}^{N}e(y_i, s_{l-1}(x_i) + c_l \times w_l(x_i))
+\operatorname*{arg\,min}_{c_l,w_l} \sum_{i=1}^{N}e(y_i, s_{l-1}(\bm{x_i}) + c_l \times w_l(\bm{x_i}^{(l)}))
 $$
 
 where $e$ is the prediction error function
@@ -405,16 +405,16 @@ With $M$ vectors of predictions for $\bm{y}$:
 
 * Create a $n \times m$ matrix by stacking predictions from each model
 
-Then we estimate an OLS model:
+Then we estimate a constrained model:
 $$
-y_i = \sum_{m=1}^Mw_m\hat{y}_{im} + \epsilon_i.
+y_i = \sum_{m=1}^Mw_m\hat{y}_{im} + \epsilon_i,
 $$
-So that $w_m$ are weights, we impose two further restrictions on $\bm{w}$:
+where $w_m$ are weights, and:
 
 * $w_m \geq 0$
 * $\sum_m{w_m} = 1$
 
-Denote the resultant trained model $\hat{H}$
+Denote the resultant trained super-learner model $\hat{H}$
 
 ## 4. Predict new data
 
@@ -431,7 +431,7 @@ To make predictions on *new* test data $\bm{X'}$ we:
   
 2. Pass the resultant predictions through $\hat{H}$
 
-    * I.e. $\hat{\bm{y'}} = \hat{H}(\bm{X'}) = \hat{\alpha} + \sum_{m=1}^M{\hat{w}_m\hat{\bm{y'}_m}}$
+    * I.e. $\hat{\bm{y'}} = \hat{H}(\bm{X'}) = \sum_{m=1}^M{\hat{w}_m\hat{\bm{y'}_m}}$
 
 ## Oracle performance
 
@@ -668,6 +668,9 @@ Prediction problem:
 \]
 \end{scriptsize}
 
+For more information, see Grimmer, Messing, and Westwood (2017):
+https://doi.org/10.1017/pan.2017.15
+
 
 # ML is not a panacea
 
@@ -689,7 +692,7 @@ Is this problematic?
 * OLS may be no better (Gauss Markov assumptions are strong)
 * But if GM does hold, then we *would* recover unbiased estimate
 
-## Incorrect interpretation
+## 
 
 > "I ran a LASSO model to identify the most important predictors from a high-dimensional dataset. For every unit increase in GDP, perceived levels of democracy increase by 20%!"
 
@@ -699,7 +702,7 @@ Is this problematic?
 
 2. What's bad about this statement?
 
-## Neglecting design
+## 
 
 > "It's impossible to directly observe levels of trust for historical periods. Therefore we take a library of portrait paintings from across time, and use a neural network-based facial recognition strategy to predict trustworthiness. When we regress a measure of democracy over time with this measure, we find that increases in trust lead to increases in democratic values!"
 
