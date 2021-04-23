@@ -38,7 +38,7 @@ set.seed(89)
 ## Read in the data
 adult <- read_csv("https://raw.githubusercontent.com/MIDASverse/MIDASpy/master/Examples/adult_data.csv") %>% 
   drop_na() %>% # This is not good practise (we're just doing it for the sake of demonstration!)
-  select(-X1) 
+  select(-X1)
 
 #### 2. Setup the prediction problem ####
 
@@ -46,9 +46,6 @@ adult <- read_csv("https://raw.githubusercontent.com/MIDASverse/MIDASpy/master/E
 train_index <- sample(c(T,F), nrow(adult), replace = TRUE)
 adult_train <- adult[train_index,]
 adult_test <- adult[!train_index,]
-
-x_train <- bake(rec_obj, new_data = adult_train) %>% select(-class_labels)
-x_test  <- bake(rec_obj, new_data = adult_test) %>% select(-class_labels)
 
 y_train <- ifelse(adult_train$class_labels == ">50K",1,0)
 y_test <- ifelse(adult_test$class_labels == ">50K",1,0)
@@ -62,6 +59,8 @@ rec_obj <- recipe(class_labels ~ ., data = adult) %>%
   step_scale(all_predictors(), -all_outcomes()) %>% # Scale all predictors with sd=1
   prep(data = adult)
 
+x_train <- bake(rec_obj, new_data = adult_train) %>% select(-class_labels)
+x_test  <- bake(rec_obj, new_data = adult_test) %>% select(-class_labels)
 
 ## Construct a neural network
 model <- keras_model_sequential() %>% 
@@ -102,7 +101,7 @@ model_w_dropout <- keras_model_sequential() %>%
     metrics   = c('accuracy') # Determines what is plotted while training occurs
   )
 
-history <- fit(
+history2 <- fit(
   object = model_w_dropout,
   x = as.matrix(x_train), 
   y = y_train, 
