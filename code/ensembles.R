@@ -59,7 +59,8 @@ y_test <- cces$votetrump[test_indices]
 # Logistic
 
 logit_model <- glm(paste0("votetrump ~ ",paste0(train_vars, collapse = " + ")),
-                   data = cbind(votetrump = y_train, x_train))
+                   data = cbind(votetrump = y_train, x_train),
+                   family = binomial(link="logit"))
 
 # LASSO
 
@@ -93,9 +94,9 @@ rf_model <- randomForest(votetrump ~ .,
 #### 3. Generate stacking model ####
 
 # Get predictions on training data
-logit_yhat_train <- predict(logit_model)
+logit_yhat_train <- predict(logit_model, type = "response")
 
-lasso_yhat_train <- predict(lasso_mod, newx = x_train_lasso)
+lasso_yhat_train <- predict(lasso_mod, newx = x_train_lasso, type = "response")
 
 rf_yhat_train <- predict(rf_model, type = "prob")[,2]
 
@@ -117,9 +118,9 @@ train_wgts <- c(stack_model$coefficients, 1 - sum(stack_model$coefficients))
 
 #### 4. Generate a stacked predictor function
 
-yhat_test_logit <- predict(logit_model, newdata = x_test)
+yhat_test_logit <- predict(logit_model, newdata = x_test, type = "response")
 
-yhat_test_lasso <-  predict(lasso_mod, newx = lasso_format(x_test))
+yhat_test_lasso <-  predict(lasso_mod, newx = lasso_format(x_test), type = "response")
 
 yhat_test_rf <- predict(rf_model, newdata = x_test, type = "prob")[,2]
 
@@ -160,7 +161,7 @@ mean((yhat_test - y_test)^2)
 ## Using the SuperLearner package and workflow in the above guide, can you repeat
 # the above analysis? 
 # 
-# NB 1: Gven the use of cross-validation etc. don't expect to find identical 
+# NB 1: Given the use of cross-validation etc. don't expect to find identical 
 # results between our simplistic estimator and the SuperLearner equivalent.
 #
 # NB 2: You may find that this won't run on RStudio cloud for memory reasons,
